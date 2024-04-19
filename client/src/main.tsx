@@ -7,7 +7,7 @@ import "./index.css";
 import routes from "~react-pages";
 import { SocketProvider } from "./socketProvider";
 
-function App() {
+export function App() {
   return <Suspense fallback={<p>Loading...</p>}>{useRoutes(routes)}</Suspense>;
 }
 

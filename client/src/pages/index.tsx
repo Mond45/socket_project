@@ -1,8 +1,8 @@
-import { useContext, useState } from "react";
-import { SocketContext } from "../socketProvider";
+import { useState } from "react";
+import { useSocket } from "@/lib/socket";
 
 export default function Page() {
-  const { socket, messages } = useContext(SocketContext);
+  const { socket, messages } = useSocket();
   const [text, setText] = useState("");
   return (
     <div className="flex flex-col gap-2 p-8">
@@ -23,7 +23,7 @@ export default function Page() {
             socket?.emit("client-send-message", { message: text });
             setText("");
           }}
-          className='bg-slate-400 p-2 rounded-md'
+          className="bg-slate-400 p-2 rounded-md"
         >
           Send
         </button>
