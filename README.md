@@ -1,5 +1,5 @@
 Start server
-```cd server; pnpm prisma db push```
+```cd server; pnpm prisma db push; pnpm prisma generate```
 ```pnpm start```
 
 Start client
