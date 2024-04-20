@@ -5,11 +5,7 @@ export default function Main() {
 
   return (
     <div>
-      {users?.map((user) => (
-        <div key={user.id}>
-          {user.id} {user.username}
-        </div>
-      ))}
+      
     </div>
   );
 }

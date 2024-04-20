@@ -32,17 +32,17 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on("server-send-message", ({ message }: { message: string }) => {
-      setMessages((prev) => [...prev, message]);
-    });
-    socket.on("server-users", (users: IUser[]) => {
-      setUsers(users);
-    });
-    socket.on("server-login", ({ success }: { success: boolean }) => {
-      if (success) {
-        navigate("/main");
-      }
-    });
+    // socket.on("server-send-message", ({ message }: { message: string }) => {
+    //   setMessages((prev) => [...prev, message]);
+    // });
+    // socket.on("server-users", (users: IUser[]) => {
+    //   setUsers(users);
+    // });
+    // socket.on("server-login", ({ success }: { success: boolean }) => {
+    //   if (success) {
+    //     navigate("/main");
+    //   }
+    // });
   }, [socket, navigate]);
 
   return (

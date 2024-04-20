@@ -12,10 +12,7 @@ export default function Login() {
         className="flex flex-col gap-2 p-8"
         onSubmit={(e) => {
           e.preventDefault();
-          socket?.emit("client_login", {
-            username,
-            password,
-          });
+          
           // register
         }}
       >
