@@ -15,6 +15,10 @@ export interface IMessage {
 }
 
 export interface IChatRoom {
+  members: {
+    id: string;
+    username: string;
+  }[];
   id: string;
   name: string;
   group: boolean;

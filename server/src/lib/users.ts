@@ -1,8 +1,11 @@
+import { Socket } from "socket.io";
 import { prisma } from "./prisma";
 import { IUser } from "@common/types";
 
 interface IConnectedSocket {
   socket_id: string;
+  socket: Socket;
+  user_id: string;
   username: string;
 }
 
@@ -24,7 +27,7 @@ export async function registerUser(username: string, password: string) {
 }
 
 export async function loginUser(
-  socket_id: string,
+  socket: Socket,
   username: string,
   password: string
 ): Promise<IUser | null> {
@@ -40,7 +43,12 @@ export async function loginUser(
     },
   });
   if (user) {
-    connectedSockets.push({ socket_id, username });
+    connectedSockets.push({
+      socket_id: socket.id,
+      socket,
+      username,
+      user_id: user.id,
+    });
   }
   return user;
 }
@@ -78,4 +86,8 @@ export async function getConnectedUsers(): Promise<IUser[]> {
 
 export function disconnectUser(socket_id: string) {
   connectedSockets = connectedSockets.filter((s) => s.socket_id !== socket_id);
+}
+
+export function getSocketsByUserIds(ids: string[]) {
+  return connectedSockets.filter((s) => ids.includes(s.user_id)).map((s) => s.socket);
 }

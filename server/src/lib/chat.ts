@@ -51,14 +51,10 @@ export async function getMessages(room_id: string): Promise<IMessage[]> {
   return messages;
 }
 
-export async function getChatRooms(user_id: string): Promise<IChatRoom[]> {
+export async function getChatRooms(): Promise<IChatRoom[]> {
   const chatRooms = await prisma.chatRoom.findMany({
-    where: {
-      members: {
-        some: {
-          id: user_id,
-        },
-      },
+    include: {
+      members: { select: { id: true, username: true } },
     },
   });
   return chatRooms;
@@ -70,12 +66,64 @@ export async function createChatRoom(
   group: boolean = true
 ) {
   try {
-    await prisma.chatRoom.create({
+    if (!group && id.length !== 2) {
+      console.log("DM room must have 2 members");
+      return;
+    }
+    if (!group) {
+      const room = await prisma.chatRoom.findFirst({
+        where: {
+          AND: [
+            {
+              members: {
+                some: {
+                  id: id[0],
+                },
+              },
+            },
+            {
+              members: {
+                some: {
+                  id: id[1],
+                },
+              },
+            },
+            {
+              group: false,
+            },
+          ],
+        },
+      });
+      if (room) {
+        console.log("DM room already exists");
+        return;
+      }
+    }
+    return await prisma.chatRoom.create({
       data: {
         name,
         group: group,
         members: {
           connect: id.map((i) => ({ id: i })),
+        },
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export async function enterChatRoom(user_id: string, room_id: string) {
+  try {
+    await prisma.chatRoom.update({
+      where: {
+        id: room_id,
+      },
+      data: {
+        members: {
+          connect: {
+            id: user_id,
+          },
         },
       },
     });
