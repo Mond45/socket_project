@@ -14,6 +14,10 @@ export default function Register() {
         className="flex flex-col gap-2 p-8"
         onSubmit={(e) => {
           e.preventDefault();
+          if (password === "" || username === "") {
+            alert("Please fill login info!");
+            return;
+          }
           socket?.emit(
             "client-register",
             { username, password },
