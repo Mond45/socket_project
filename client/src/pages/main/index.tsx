@@ -35,6 +35,7 @@ export default function Main() {
               user_id: loggedUser?.id,
               status: status === "" ? null : status,
             });
+            setStatus("");
           }}
         >
           <input
@@ -89,6 +90,7 @@ export default function Main() {
               name: groupName,
               members: [loggedUser?.id],
             });
+            setGroupName("");
           }}
         >
           <input
@@ -170,6 +172,7 @@ export default function Main() {
                   userId: loggedUser?.id,
                   content: chatMsg,
                 });
+                setChatMsg("");
               }}
             >
               <input
