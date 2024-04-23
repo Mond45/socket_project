@@ -20,11 +20,16 @@ export default function ChatMessages({
             className="flex group gap-2 items-center cursor-pointer"
           >
             <span className="group-hover:text-slate-600">
-              {message.user.username}: {message.content}
+              <div className="inline font-bold text-blue-500">
+                {message.user.username}
+              </div>
+              <div className="inline">
+                : {message.content}
+              </div>
             </span>
             {message.user.id === loggedUser?.id && (
               <button
-                className="collapse group-hover:visible border border-gray-300 rounded p-1.5 bg-red-500 text-gray-50"
+                className="collapse group-hover:visible border border-gray-300 rounded p-1.5 bg-red-500 text-gray-50 text-xs"
                 onClick={() => {
                   socket?.emit("client-unsend-message", {
                     message_id: message.id,
@@ -35,7 +40,7 @@ export default function ChatMessages({
                 Unsend
               </button>
             )}
-            <span className="grow text-right group-hover:text-slate-600 overflow-ellipsis">
+            <span className="grow text-right text-gray-400 group-hover:text-gray-600 overflow-ellipsis ">
               {dayjs(message.createdAt).format("DD/MM HH:mm")}
             </span>
           </div>
