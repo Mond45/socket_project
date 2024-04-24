@@ -14,11 +14,12 @@ export default function Main() {
   const [chatMsg, setChatMsg] = useState("");
   const [selectedRoom, setSelectedRoom] = useState<string>("");
   const [status, setStatus] = useState<string>("");
+
   if (!loggedUser) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <a href="/login" className="text-3xl underline">
-          Please Login
+          Please Login 😮‍💨
         </a>
       </div>
     );
@@ -26,7 +27,7 @@ export default function Main() {
   return (
     <div className="space-y-6 p-8 max-w-2xl bg-slate-200 mx-auto min-h-screen">
       <div className="space-y-1">
-        <p className="text-2xl">Hello, {loggedUser?.username}</p>
+        <p className="text-4xl">Hello, {loggedUser?.username} 😁</p>
         <form
           className="space-x-2"
           onSubmit={(e) => {
@@ -40,16 +41,16 @@ export default function Main() {
         >
           <input
             type="text"
-            placeholder="Status"
+            placeholder="how's your day?"
             className="border border-gray-300 rounded p-1.5"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           />
           <button
-            className="border border-gray-300 rounded p-1.5 bg-white"
+            className="border bg-blue-300 rounded-md pl-1.5 pr-1.5 pt-1 pb-1"
             type="submit"
           >
-            Set
+            set status
           </button>
         </form>
       </div>
@@ -58,11 +59,16 @@ export default function Main() {
         {users?.map((user) => (
           <div className="space-x-2">
             <span key={user.id}>
-              {user.username} [{user.status ?? "ONLINE"}]
+              <div className="inline">
+                {user.username} 
+              </div>
+              <div className={`inline ml-2 ${user.status ? "text-[#80669d]" : "text-green-500"}`}>
+                [{user.status ?? "ONLINE"}]
+              </div>
             </span>
             {user.id != loggedUser?.id && (
               <button
-                className="border border-gray-300 rounded p-1.5 bg-white"
+                className="p-1 bg-blue-300 rounded-md font-bold text-sm"
                 onClick={() => {
                   socket?.emit("client-create-dm", {
                     user1: loggedUser,
@@ -70,7 +76,7 @@ export default function Main() {
                   });
                 }}
               >
-                Create DM
+                DM
               </button>
             )}
           </div>
@@ -101,7 +107,7 @@ export default function Main() {
             onChange={(e) => setGroupName(e.target.value)}
           />
           <button
-            className="border border-gray-300 rounded p-1.5 bg-white"
+            className="bg-blue-300 rounded-md pl-1.5 pr-1.5 pt-1 pb-1"
             type="submit"
           >
             Create
@@ -118,7 +124,7 @@ export default function Main() {
                 .map((m) => m.id)
                 .includes(loggedUser?.id ?? "") && (
                 <button
-                  className="border border-gray-300 rounded p-1.5 bg-white"
+                  className="bg-blue-300 rounded-md pl-1.5 pr-1.5 pt-1 pb-1"
                   onClick={() => {
                     socket?.emit("client-join-room", {
                       userId: loggedUser?.id,
@@ -139,7 +145,7 @@ export default function Main() {
         <h1 className="text-2xl">Chat</h1>
         <select
           value={selectedRoom}
-          className="p-2 bg-white"
+          className="p-2 bg-white rounded-md"
           onChange={(e) => setSelectedRoom(e.target.value)}
         >
           <option value={""}>Select Room</option>
@@ -156,7 +162,7 @@ export default function Main() {
             ))}
         </select>
         {selectedRoom !== "" && (
-          <div className="space-y-1">
+          <div className="space-y-1 w-full border-t border-gray-300 pt-2">
             <div className="space-y-2">
               <ChatMessages
                 messages={messages ?? {}}
@@ -164,7 +170,7 @@ export default function Main() {
               />
             </div>
             <form
-              className="space-x-2"
+              className="space-x-2 w-100vw border-t border-gray-300 pt-2 flex justify-between items-center"
               onSubmit={(e) => {
                 e.preventDefault();
                 socket?.emit("client-send-message", {
@@ -178,7 +184,7 @@ export default function Main() {
               <input
                 type="text"
                 placeholder="Message"
-                className="border border-gray-300 rounded p-1.5"
+                className="border border-gray-300 rounded p-1.5 w-full"
                 value={chatMsg}
                 onChange={(e) => setChatMsg(e.target.value)}
               />
